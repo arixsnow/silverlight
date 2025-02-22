@@ -27,7 +27,7 @@ func main() {
 		Capabilities: 0x00000001,
 		Actions:      0x0000ffff,
 		Ports: []openflow10.PhyPort{
-			openflow10.PhyPort{
+			{
 				PortNo: 1,
 				HWAddr: net.HardwareAddr{0x00, 0x11, 0x22, 0x33, 0x44, 0x55},
 				Name:   "eth0",
@@ -40,11 +40,12 @@ func main() {
 
 	// Deserialize
 	decoded, err := openflow10.DeserializeSwitchFeatures(data)
-	if err != nil {
+	switch {
+	case err != nil:
 		fmt.Printf("Deserialization failed: %v", err)
-	} else if decoded.DatapathID != sf.DatapathID {
+	case decoded.DatapathID != sf.DatapathID:
 		fmt.Printf("DatapathID mismatch: got %#x, want %#x", decoded.DatapathID, sf.DatapathID)
-	} else {
+	default:
 		fmt.Printf("Decoded successfully...\ndecoded: %v\nactual: %v\n", decoded, sf)
 	}
 }
