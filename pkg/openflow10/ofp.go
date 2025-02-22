@@ -135,7 +135,7 @@ const (
 	 */
 	OFPP_TABLE PortType = 0xfff9
 
-	/* Process with normal L2/L3 swtiching */
+	/* Process with normal L2/L3 switching */
 	OFPP_NORMAL PortType = 0xfffa
 
 	/* All physical ports except input port and those disabled by STP */
