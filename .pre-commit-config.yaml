@@ -1,0 +1,30 @@
+repos:
+- repo: https://github.com/dnephin/pre-commit-golang
+  rev: v0.5.1
+  hooks:
+    - id: go-fmt
+      name: Run go fmt
+      pass_filenames: false
+    - id: go-vet
+      name: Run go vet
+      pass_filenames: false
+    - id: go-imports
+      name: Run go imports
+      pass_filenames: false
+    - id: golangci-lint
+      name: Run golangci-lint
+      pass_filenames: false
+    - id: go-critic
+      name: Run go critic
+      pass_filenames: false
+    - id: go-unit-tests
+      name: Run go test
+      pass_filenames: false
+
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+    - id: trailing-whitespace
+    - id: end-of-file-fixer
+    - id: check-yaml
+    - id: check-added-large-files

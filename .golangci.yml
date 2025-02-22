@@ -1,0 +1,50 @@
+linters:
+  enable:
+    - gofmt
+    - govet
+    - goimports
+    - gosimple
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - typecheck
+    - gocritic
+    - revive
+    - misspell
+
+linters-settings:
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+  gofmt:
+    simplify: true
+  govet:
+    enable:
+      - shadow
+    disable:
+      - composites
+  revive:
+    rules:
+      - name: exported
+        arguments:
+          - disableStutteringCheck
+
+run:
+  timeout: 5m
+  tests: true
+  skip-dirs:
+    - vendor/
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec
+
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
