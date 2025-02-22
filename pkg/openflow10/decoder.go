@@ -8,8 +8,8 @@ package openflow10
 
 import (
 	"bytes"
+	"encoding/binary"
 	"errors"
-  "encoding/binary"
 	"fmt"
 	"net"
 )
@@ -90,7 +90,7 @@ func DeserializeSwitchFeatures(data []byte) (*SwitchFeatures, error) {
 
 		port, err := DeserializePhyPort(portsData[start:end])
 		if err != nil {
-			return nil, fmt.Errorf("Error in parsing port %d %v", i, err)
+			return nil, fmt.Errorf("error in parsing port %d: %v", i, err)
 		}
 
 		sf.Ports = append(sf.Ports, *port)
