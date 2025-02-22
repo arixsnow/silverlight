@@ -16,8 +16,12 @@ func (h *Header) Serialize() []byte {
 
 	buf.WriteByte(h.Version)
 	buf.WriteByte(h.Type)
-	binary.Write(buf, binary.BigEndian, h.Length)
-	binary.Write(buf, binary.BigEndian, h.Xid)
+	if err := binary.Write(buf, binary.BigEndian, h.Length); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, h.Xid); err != nil {
+		return nil
+	}
 
 	return buf.Bytes()
 }
@@ -25,18 +29,32 @@ func (h *Header) Serialize() []byte {
 func (p *PhyPort) Serialize() []byte {
 	buf := new(bytes.Buffer)
 
-	binary.Write(buf, binary.BigEndian, p.PortNo)
+	if err := binary.Write(buf, binary.BigEndian, p.PortNo); err != nil {
+		return nil
+	}
 	buf.Write(p.HWAddr)
 
 	nameBytes := make([]byte, OFP_MAX_PORT_NAME_LEN)
 	copy(nameBytes, p.Name)
 	buf.Write(nameBytes)
-	binary.Write(buf, binary.BigEndian, p.Config)
-	binary.Write(buf, binary.BigEndian, p.State)
-	binary.Write(buf, binary.BigEndian, p.Curr)
-	binary.Write(buf, binary.BigEndian, p.Advertised)
-	binary.Write(buf, binary.BigEndian, p.Supported)
-	binary.Write(buf, binary.BigEndian, p.Peer)
+	if err := binary.Write(buf, binary.BigEndian, p.Config); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, p.State); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, p.Curr); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, p.Advertised); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, p.Supported); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, p.Peer); err != nil {
+		return nil
+	}
 
 	return buf.Bytes()
 }
@@ -44,19 +62,31 @@ func (p *PhyPort) Serialize() []byte {
 func (sf *SwitchFeatures) Serialize() []byte {
 	buf := new(bytes.Buffer)
 
-	buf.Write(sf.Header.Serialize())
-	binary.Write(buf, binary.BigEndian, sf.DatapathID)
-	binary.Write(buf, binary.BigEndian, sf.N_Buffers)
+	if err := binary.Write(buf, binary.BigEndian, sf.Header); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, sf.DatapathID); err != nil {
+		return nil
+	}
+	if err := binary.Write(buf, binary.BigEndian, sf.N_Buffers); err != nil {
+		return nil
+	}
 
 	buf.WriteByte(sf.N_Tables)
 	buf.Write([]byte{0, 0, 0})
 
-	binary.Write(buf, binary.BigEndian, sf.Capabilities)
+	if err := binary.Write(buf, binary.BigEndian, sf.Capabilities); err != nil {
+		return nil
+	}
 
-	binary.Write(buf, binary.BigEndian, sf.Actions)
+	if err := binary.Write(buf, binary.BigEndian, sf.Actions); err != nil {
+		return nil
+	}
 
 	for _, port := range sf.Ports {
-		buf.Write(port.Serialize())
+		if _, err := buf.Write(port.Serialize()); err != nil {
+			return nil
+		}
 	}
 
 	sf.Header.Length = uint16(buf.Len())
